@@ -111,13 +111,11 @@ const App = () => {
 
   const handleDeleteComment = async (id) => {
     try {
-      const response = await axios.post(`http://localhost:8080/comment/delete`, null, {
-        params: { id },
-      });
-      if (response.code === 0) {
-        setCommentList(commentList.filter((item) => item.id !== id)); // 使用id过滤列表
+      const response = await axios.delete(`http://localhost:8080/comment/delete/${id}`);
+      if (response.data.code === 0) {
+        setCommentList(commentList.filter((item) => item.id !== id));
       } else {
-        throw new Error(response.code);
+        throw new Error(response.data.msg || 'Delete failed');
       }
     } catch (error) {
       console.error('Failed to delete comment:', error);
